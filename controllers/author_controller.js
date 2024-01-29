@@ -1,4 +1,4 @@
-const Post = require("../models/post");
+const Author = require("../models/author");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 

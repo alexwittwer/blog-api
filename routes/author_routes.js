@@ -1,35 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const Author = require("../models/author");
+const author_controller = require("../controllers/author_controller");
 
-router.get("/", (req, res) => {
-  return res.json({
-    message: "Not implemented yet",
-  });
-});
-
-router.get("/:id", (req, res) => {
-  res.json({
-    message: "Not implemented yet",
-  });
-});
-
-router.post("/", (req, res) => {
-  res.json({
-    message: "Not implemented yet",
-  });
-});
-
-router.patch("/:id", (req, res) => {
-  res.json({
-    message: "Not implemented yet",
-  });
-});
-
-router.delete("/:id", (req, res) => {
-  res.json({
-    message: "Not implemented yet",
-  });
-});
+router.get("/", author_controller.author_get_all);
+router.get("/:id", author_controller.author_get_single);
+router.post("/", author_controller.author_create);
+router.patch("/:id", author_controller.author_patch);
+router.delete("/:id", author_controller.author_delete);
 
 module.exports = router;

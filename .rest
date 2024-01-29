@@ -1,4 +1,75 @@
-###
+### POSTS ROUTES
 
 GET http://localhost:3000/posts
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/posts/12
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/posts
+Content-Type: application/json
+
+###
+
+PATCH http://localhost:3000/posts/12
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:3000/posts/12
+Content-Type: application/json
+
+
+### AUTHOR ROUTES
+
+GET http://localhost:3000/authors
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/authors/12
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/authors
+Content-Type: application/json
+
+###
+
+PATCH http://localhost:3000/authors/12
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:3000/authors/12
+Content-Type: application/json
+
+### COMMENT ROUTES
+
+GET http://localhost:3000/comments
+Content-Type: application/json
+
+###
+
+GET http://localhost:3000/comments/12
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/comments
+Content-Type: application/json
+
+###
+
+PATCH http://localhost:3000/comments/12
+Content-Type: application/json
+
+###
+
+DELETE http://localhost:3000/comments/12
 Content-Type: application/json
