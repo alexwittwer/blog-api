@@ -80,17 +80,17 @@ Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/posts/65b844045c504309161edfe0/comments
+POST http://localhost:3000/posts/65b844045c504309161edfe0/comments/
 Content-Type: application/json
 
 {
     "author": "test",
-    "text": "hello world"
+    "text": "hello worlds"
 }
 
 ###
 
-PATCH http://localhost:3000/posts/65b844045c504309161edfe0/comments/65b851351ea2529bda51ca91
+PATCH http://localhost:3000/posts/65b844045c504309161edfe0/comments/65b851381ea2529bda51ca96
 Content-Type: application/json
 
 {
@@ -99,5 +99,5 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65b844045c504309161edfe0/comments/65b851351ea2529bda51ca91
+DELETE http://localhost:3000/posts/65b844045c504309161edfe0/comments/65b8513d1ea2529bda51caa6
 Content-Type: application/json

@@ -1,11 +1,20 @@
 const Post = require("../models/post");
+const Comment = require("../models/comment");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
 exports.post_get_all = asyncHandler(async (req, res) => {
-  const allPosts = await Post.find().populate("comments").exec();
+  try {
+    const allPosts = await Post.find().populate("comments").exec();
 
-  res.json(allPosts);
+    if (!allPosts) {
+      res.status(404).json({ message: "No posts found" });
+    } else {
+      res.json(allPosts);
+    }
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
 });
 
 exports.post_get_single = asyncHandler(async (req, res) => {
@@ -14,10 +23,10 @@ exports.post_get_single = asyncHandler(async (req, res) => {
       .populate("comments")
       .exec();
 
-    if (singlePost != null) {
-      res.json(singlePost);
+    if (!singlePost) {
+      res.status(404).json({ message: "Post not found" });
     } else {
-      res.sendStatus(404);
+      res.json(singlePost);
     }
   } catch (err) {
     res.sendStatus(500);
@@ -25,6 +34,7 @@ exports.post_get_single = asyncHandler(async (req, res) => {
 });
 
 exports.post_create = asyncHandler(async (req, res) => {
+  // TODO add validation and sanitization
   const newPost = new Post({
     title: req.body.title,
     author: req.body.author,
@@ -35,7 +45,7 @@ exports.post_create = asyncHandler(async (req, res) => {
     await newPost.save();
     res.status(201).json(newPost);
   } catch (err) {
-    res.sendStatus(400);
+    res.sendStatus(500);
   }
 });
 
@@ -50,7 +60,7 @@ exports.post_patch = asyncHandler(async (req, res) => {
     post.title = req.body.title || post.title;
     post.text = req.body.text || post.text;
 
-    post.save();
+    await post.save();
     res.status(200).json(post);
   } catch (err) {
     res.status(500).json(err);
@@ -59,11 +69,18 @@ exports.post_patch = asyncHandler(async (req, res) => {
 
 exports.post_delete = asyncHandler(async (req, res) => {
   try {
-    const post = await Post.findByIdAndDelete(req.params.postid);
-    if (post !== null) {
-      res.json(post);
+    const [post, allComments] = await Promise.all([
+      Post.findByIdAndDelete(req.params.postid).exec(),
+      Comment.find({ parent: req.params.postid }).exec(),
+    ]);
+
+    if (!post) {
+      res.status(404).json({ message: "Post not found" });
     } else {
-      res.sendStatus(404);
+      allComments.map(async (comment) => {
+        await Comment.findByIdAndDelete(comment.id);
+      });
+      res.json(post);
     }
   } catch (err) {
     res.sendStatus(500);

@@ -12,9 +12,17 @@ exports.comment_get_all = asyncHandler(async (req, res) => {
 });
 
 exports.comment_get_single = asyncHandler(async (req, res) => {
-  const comment = await Comment.findById(req.params.commentid).exec();
+  try {
+    const comment = await Comment.findById(req.params.commentid).exec();
 
-  res.json(comment);
+    if (!comment) {
+      res.status(404).json({ message: "Comment not found" });
+    } else {
+      res.json(comment);
+    }
+  } catch (err) {
+    res.status(500).json({ message: err });
+  }
 });
 
 exports.comment_create = asyncHandler(async (req, res) => {
@@ -26,12 +34,13 @@ exports.comment_create = asyncHandler(async (req, res) => {
       text: req.body.text,
       parent: req.params.postid,
     });
-
-    post.comments.push(newComment);
-
-    await Promise.all([post.save(), newComment.save()]);
-
-    res.status(200).json(post);
+    if (!post) {
+      res.status(403).json({ message: "Post not found" });
+    } else {
+      post.comments.push(newComment);
+      await Promise.all([post.save(), newComment.save()]);
+      res.status(200).json(post);
+    }
   } catch (err) {
     res.sendStatus(500);
   }
@@ -43,20 +52,33 @@ exports.comment_patch = asyncHandler(async (req, res) => {
 
     if (!comment) {
       res.status(404).json({ message: "Comment not found" });
+    } else {
+      comment.author = req.body.author || comment.author;
+      comment.text = req.body.text || comment.text;
+
+      await comment.save();
+      res.status(200).json(comment);
     }
-
-    comment.author = req.body.author || comment.author;
-    comment.text = req.body.text || comment.text;
-
-    comment.save();
-    res.status(200).json(comment);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
 exports.comment_delete = asyncHandler(async (req, res) => {
-  res.json({
-    message: "Not implemented yet",
-  });
+  try {
+    const [comment, post] = await Promise.all([
+      Comment.findByIdAndDelete(req.params.commentid),
+      Post.findById(req.params.postid),
+    ]);
+
+    if (comment !== null) {
+      post.comments.filter((postComment) => postComment._id !== comment._id);
+      await post.save();
+      res.json(comment);
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    res.sendStatus(500);
+  }
 });

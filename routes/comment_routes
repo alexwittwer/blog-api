@@ -8,7 +8,7 @@ router
   .post(comment_controller.comment_create);
 router
   .route("/:commentid")
-  .all(comment_controller.comment_get_single)
+  .get(comment_controller.comment_get_single)
   .patch(comment_controller.comment_patch)
   .delete(comment_controller.comment_delete);
 
