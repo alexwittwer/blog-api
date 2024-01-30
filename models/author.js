@@ -14,7 +14,7 @@ const AuthorSchema = new mongoose.Schema({
       ref: "Comment",
     },
   ],
-  joinDate: { type: Date },
+  joinDate: { type: Date, default: Date.now },
   bio: { type: String },
 });
 

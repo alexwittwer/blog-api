@@ -18,7 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/posts", postRouter);
 app.use("/authors", authorRouter);
-app.use("/comments", commentRouter);
+app.use("/posts/:postid/comments", commentRouter);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server is listening...");
