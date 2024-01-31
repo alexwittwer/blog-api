@@ -12,11 +12,11 @@ Content-Type: application/json
 
 POST http://localhost:3000/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwiaWF0IjoxNzA2NjgxNDM4fQ.MximL0POhXpvivqgOHH62-ry63v6aOhygr0EbkoWSMw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 {
     "title": "Test",
-    "user": "65b9e42e973848191daf545a",
+    "user": "65bad4f06af65e8d6a203c6d",
     "text": "Hello World",
     "comments": []
 }
@@ -24,7 +24,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ
 ###
 
 
-PATCH http://localhost:3000/posts/65b997b6f53629c239019e2f
+PATCH http://localhost:3000/posts/65b9e5ede272d5b3438d66e3
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65b9e4826564b6ec9be149cb
+DELETE http://localhost:3000/posts/65bad5106af65e8d6a203c75
 Content-Type: application/json
 
 
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/users/65b99f31e4074bbe7b0e532a
+GET http://localhost:3000/users/65bad4f06af65e8d6a203c6d
 Content-Type: application/json
 
 ###
@@ -55,15 +55,15 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-    "name": "Test",
+    "name": "Alex",
     "bio": "Hello world!",
     "password": "password",
-    "email": "test@email.com"
+    "email": "alex@blogger.com"
 }
 
 ###
 
-PATCH http://localhost:3000/users/12
+PATCH http://localhost:3000/users/65b9e42e973848191daf545a
 Content-Type: application/json
 
 {
@@ -72,22 +72,22 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/users/65b9b79da000b65103bd0ccd
+DELETE http://localhost:3000/users/65bad3843606ecab51febe02
 Content-Type: application/json
 
 ### COMMENT ROUTES
 
-GET http://localhost:3000/posts/65b997d0f53629c239019e39/comments
+GET http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments
 Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65b997d0f53629c239019e39/comments/65b851351ea2529bda51ca91
+GET http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/65b851351ea2529bda51ca91
 Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/posts/65b997d0f53629c239019e39/comments/
+POST http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/
 Content-Type: application/json
 
 {
@@ -97,7 +97,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/posts/65b997d0f53629c239019e39/comments/65b851381ea2529bda51ca96
+PATCH http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/65b851381ea2529bda51ca96
 Content-Type: application/json
 
 {
@@ -106,7 +106,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65b85dc5f2e022f75876c32c/comments/65b858976206c24d2aba9914
+DELETE http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/65b858976206c24d2aba9914
 Content-Type: application/json
 
 
@@ -117,5 +117,5 @@ Content-Type: application/json
 
 {
     "password": "password",
-    "email": "test@email.com"
+    "email": "alex@blogger.com"
 }

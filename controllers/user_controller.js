@@ -1,5 +1,7 @@
 const User = require("../models/user");
+const UserAuth = require("../models/user_auth");
 const Post = require("../models/post");
+const Comment = require("../models/comment");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
@@ -14,12 +16,19 @@ exports.user_get_all = asyncHandler(async (req, res) => {
 });
 
 exports.user_get_single = asyncHandler(async (req, res) => {
-  const user = User.findById(req.params.id);
+  try {
+    const user = await User.findById(req.params.userid)
+      .populate("posts", "comments")
+      .exec();
 
-  if (user) {
-    res.json(user);
-  } else {
-    res.sendStatus(404);
+    if (!user) {
+      res.sendStatus(404);
+    } else {
+      res.status(200).json(user);
+    }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
   }
 });
 
@@ -34,11 +43,15 @@ exports.user_create = asyncHandler(async (req, res) => {
     const newuser = new User({
       name: req.body.name,
       bio: req.body.bio,
+      email: req.body.email,
+    });
+
+    const newuserAuth = new UserAuth({
       password: req.body.password,
       email: req.body.email,
     });
 
-    newuser.save();
+    await Promise.all([newuser.save(), newuserAuth.save()]);
     res.json({ message: "User created successfully" });
   } catch (err) {
     res.sendStatus(500);
@@ -72,7 +85,10 @@ exports.user_delete = asyncHandler(async (req, res) => {
     res.status(403).json({ message: "Delete posts before continuing" });
   } else {
     try {
-      await User.findByIdAndDelete(req.params.userid);
+      await Promise.all([
+        User.findByIdAndDelete(req.params.userid),
+        UserAuth.deleteOne({ email: user.email }),
+      ]);
       res.status(200).json({ message: "User deleted" });
     } catch (err) {
       res.sendStatus(500);

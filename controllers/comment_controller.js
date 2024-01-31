@@ -28,12 +28,14 @@ exports.comment_get_single = asyncHandler(async (req, res) => {
 exports.comment_create = asyncHandler(async (req, res) => {
   try {
     const post = await Post.findById(req.params.postid);
-
     const newComment = new Comment({
       user: req.body.user,
       text: req.body.text,
-      parent: req.params.postid,
+      parent: post._id,
     });
+
+    console.log(newComment);
+
     if (!post) {
       res.status(403).json({ message: "Post not found" });
     } else {

@@ -22,7 +22,7 @@ exports.post_get_all = asyncHandler(async (req, res) => {
 exports.post_get_single = asyncHandler(async (req, res) => {
   try {
     const singlePost = await Post.findById(req.params.postid)
-      .populate("comments")
+      .populate("comments user")
       .exec();
 
     if (!singlePost) {
@@ -77,7 +77,7 @@ exports.post_patch = asyncHandler(async (req, res) => {
 exports.post_delete = asyncHandler(async (req, res) => {
   try {
     const [post, allComments] = await Promise.all([
-      Post.findByIdAndDelete(req.params.postid).exec(),
+      Post.findById(req.params.postid).exec(),
       Comment.find({ parent: req.params.postid }).exec(),
     ]);
 
@@ -94,8 +94,9 @@ exports.post_delete = asyncHandler(async (req, res) => {
         allComments.map(async (comment) => {
           await Comment.findByIdAndDelete(comment.id);
         }),
+        user.save(),
+        Post.findByIdAndDelete(req.params.postid),
       ]);
-      await user.save();
       return res.json(post);
     }
   } catch (err) {
