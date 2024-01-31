@@ -5,17 +5,18 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65b844045c504309161edfe0
+GET http://localhost:3000/posts/65b99f76acfb5733fbb28f8c
 Content-Type: application/json
 
 ###
 
 POST http://localhost:3000/posts
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwiaWF0IjoxNzA2NjcwNDA5fQ.wc-YSkljisGziSFqGM1thNVN4NtE2V1UMVLNC42UVx8
 
 {
     "title": "Test",
-    "author": "65b837ec66984cc1681f6507",
+    "user": "65b9b882a8dd4b034ac73a8a",
     "text": "Hello World",
     "comments": []
 }
@@ -23,7 +24,7 @@ Content-Type: application/json
 ###
 
 
-PATCH http://localhost:3000/posts/65b844045c504309161edfe0
+PATCH http://localhost:3000/posts/65b997b6f53629c239019e2f
 Content-Type: application/json
 
 {
@@ -33,64 +34,66 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65b844045c504309161edfe0
+DELETE http://localhost:3000/posts/65b9a7d1f30fa7f74b538ad3
 Content-Type: application/json
 
 
 
-### AUTHOR ROUTES
+### user ROUTES
 
-GET http://localhost:3000/authors
-Content-Type: application/json
-
-###
-
-GET http://localhost:3000/authors/12
+GET http://localhost:3000/users
 Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/authors
+GET http://localhost:3000/users/65b99f31e4074bbe7b0e532a
+Content-Type: application/json
+
+###
+
+POST http://localhost:3000/users
 Content-Type: application/json
 
 {
     "name": "Test",
-    "bio": "Hello world!"
+    "bio": "Hello world!",
+    "password": "password",
+    "email": "test@email.com"
 }
 
 ###
 
-PATCH http://localhost:3000/authors/12
+PATCH http://localhost:3000/users/12
 Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/authors/12
+DELETE http://localhost:3000/users/65b9b79da000b65103bd0ccd
 Content-Type: application/json
 
 ### COMMENT ROUTES
 
-GET http://localhost:3000/posts/65b844045c504309161edfe0/comments
+GET http://localhost:3000/posts/65b997d0f53629c239019e39/comments
 Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65b844045c504309161edfe0/comments/65b851351ea2529bda51ca91
+GET http://localhost:3000/posts/65b997d0f53629c239019e39/comments/65b851351ea2529bda51ca91
 Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/posts/65b844045c504309161edfe0/comments/
+POST http://localhost:3000/posts/65b997d0f53629c239019e39/comments/
 Content-Type: application/json
 
 {
-    "author": "test",
+    "user": "test",
     "text": "hello worlds"
 }
 
 ###
 
-PATCH http://localhost:3000/posts/65b844045c504309161edfe0/comments/65b851381ea2529bda51ca96
+PATCH http://localhost:3000/posts/65b997d0f53629c239019e39/comments/65b851381ea2529bda51ca96
 Content-Type: application/json
 
 {
@@ -99,5 +102,16 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65b844045c504309161edfe0/comments/65b8513d1ea2529bda51caa6
+DELETE http://localhost:3000/posts/65b85dc5f2e022f75876c32c/comments/65b858976206c24d2aba9914
 Content-Type: application/json
+
+
+### LOGIN routes
+
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "password": "password",
+    "email": "test@email.com"
+}

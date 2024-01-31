@@ -30,7 +30,7 @@ exports.comment_create = asyncHandler(async (req, res) => {
     const post = await Post.findById(req.params.postid);
 
     const newComment = new Comment({
-      author: req.body.author,
+      user: req.body.user,
       text: req.body.text,
       parent: req.params.postid,
     });
@@ -53,7 +53,7 @@ exports.comment_patch = asyncHandler(async (req, res) => {
     if (!comment) {
       res.status(404).json({ message: "Comment not found" });
     } else {
-      comment.author = req.body.author || comment.author;
+      comment.user = req.body.user || comment.user;
       comment.text = req.body.text || comment.text;
 
       await comment.save();

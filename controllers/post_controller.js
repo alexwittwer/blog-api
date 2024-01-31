@@ -1,7 +1,9 @@
 const Post = require("../models/post");
+const User = require("../models/user");
 const Comment = require("../models/comment");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
+const passport = require("passport");
 
 exports.post_get_all = asyncHandler(async (req, res) => {
   try {
@@ -33,21 +35,26 @@ exports.post_get_single = asyncHandler(async (req, res) => {
   }
 });
 
-exports.post_create = asyncHandler(async (req, res) => {
-  // TODO add validation and sanitization
-  const newPost = new Post({
-    title: req.body.title,
-    author: req.body.author,
-    text: req.body.text,
-  });
+exports.post_create = [
+  passport.authenticate("jwt", { session: false }),
+  asyncHandler(async (req, res) => {
+    // TODO add validation and sanitization
+    const newPost = new Post({
+      title: req.body.title,
+      user: req.body.user,
+      text: req.body.text,
+    });
+    const user = await User.findById(req.body.user);
 
-  try {
-    await newPost.save();
-    res.status(201).json(newPost);
-  } catch (err) {
-    res.sendStatus(500);
-  }
-});
+    try {
+      user.posts.push(newPost);
+      await Promise.all([newPost.save(), user.save()]);
+      res.status(201).json(newPost);
+    } catch (err) {
+      res.sendStatus(500);
+    }
+  }),
+];
 
 exports.post_patch = asyncHandler(async (req, res) => {
   try {
