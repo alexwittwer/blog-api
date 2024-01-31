@@ -46,9 +46,21 @@ exports.user_create = asyncHandler(async (req, res) => {
 });
 
 exports.user_patch = asyncHandler(async (req, res) => {
-  res.json({
-    message: "Not implemented yet",
-  });
+  try {
+    const user = await User.findById(req.params.userid);
+
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    }
+
+    user.name = req.body.name || user.name;
+    user.bio = req.body.bio || user.bio;
+
+    await user.save();
+    res.status(200).json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 exports.user_delete = asyncHandler(async (req, res) => {

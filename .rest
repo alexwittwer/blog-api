@@ -16,7 +16,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ
 
 {
     "title": "Test",
-    "user": "65b9de8a8744b422d6de18a4",
+    "user": "65b9e42e973848191daf545a",
     "text": "Hello World",
     "comments": []
 }
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65b9e3eb973848191daf544a
+DELETE http://localhost:3000/posts/65b9e4826564b6ec9be149cb
 Content-Type: application/json
 
 
@@ -65,6 +65,10 @@ Content-Type: application/json
 
 PATCH http://localhost:3000/users/12
 Content-Type: application/json
+
+{
+    "name": "Alex"
+}
 
 ###
 
