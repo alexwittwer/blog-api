@@ -12,11 +12,11 @@ Content-Type: application/json
 
 POST http://localhost:3000/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwiaWF0IjoxNzA2NjcwNDA5fQ.wc-YSkljisGziSFqGM1thNVN4NtE2V1UMVLNC42UVx8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZW1haWwuY29tIiwiaWF0IjoxNzA2NjgxNDM4fQ.MximL0POhXpvivqgOHH62-ry63v6aOhygr0EbkoWSMw
 
 {
     "title": "Test",
-    "user": "65b9b882a8dd4b034ac73a8a",
+    "user": "65b9de8a8744b422d6de18a4",
     "text": "Hello World",
     "comments": []
 }
@@ -34,7 +34,7 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65b9a7d1f30fa7f74b538ad3
+DELETE http://localhost:3000/posts/65b9e3eb973848191daf544a
 Content-Type: application/json
 
 

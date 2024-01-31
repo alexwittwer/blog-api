@@ -72,7 +72,9 @@ exports.comment_delete = asyncHandler(async (req, res) => {
     ]);
 
     if (comment !== null) {
-      post.comments.filter((postComment) => postComment._id !== comment._id);
+      post.comments = post.comments.filter(
+        (postComment) => postComment._id !== comment._id
+      );
       await post.save();
       res.json(comment);
     } else {

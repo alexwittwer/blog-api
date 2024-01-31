@@ -24,14 +24,20 @@ exports.user_get_single = asyncHandler(async (req, res) => {
 });
 
 exports.user_create = asyncHandler(async (req, res) => {
-  const newuser = new User({
-    name: req.body.name,
-    bio: req.body.bio,
-    password: req.body.password,
-    email: req.body.email,
-  });
-
   try {
+    const check = await User.findOne({ email: req.body.email }).exec();
+
+    if (check != null) {
+      return res.status(400).json({ message: "Error: email already in use" });
+    }
+
+    const newuser = new User({
+      name: req.body.name,
+      bio: req.body.bio,
+      password: req.body.password,
+      email: req.body.email,
+    });
+
     newuser.save();
     res.json({ message: "User created successfully" });
   } catch (err) {

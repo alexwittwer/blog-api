@@ -84,10 +84,19 @@ exports.post_delete = asyncHandler(async (req, res) => {
     if (!post) {
       res.status(404).json({ message: "Post not found" });
     } else {
-      allComments.map(async (comment) => {
-        await Comment.findByIdAndDelete(comment.id);
-      });
-      res.json(post);
+      const user = await User.findById(post.user);
+
+      user.posts = user.posts.filter(
+        (userPost) => userPost._id.toString() !== post._id.toString()
+      );
+
+      await Promise.all([
+        allComments.map(async (comment) => {
+          await Comment.findByIdAndDelete(comment.id);
+        }),
+      ]);
+      await user.save();
+      return res.json(post);
     }
   } catch (err) {
     res.sendStatus(500);
