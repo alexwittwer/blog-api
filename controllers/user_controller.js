@@ -33,34 +33,65 @@ exports.user_get_single = asyncHandler(async (req, res) => {
   }
 });
 
-exports.user_create = asyncHandler(async (req, res) => {
-  try {
-    const check = await User.findOne({ email: req.body.email }).exec();
+exports.user_create = [
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter a name")
+    .isLength({ min: 6 })
+    .withMessage("Name must be a minimum of 6 characters")
+    .escape(),
+  body("bio").trim().escape(),
+  body("email")
+    .escape()
+    .notEmpty()
+    .isEmail()
+    .withMessage("Please enter a valid email"),
+  asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
 
-    if (check != null) {
-      return res.status(400).json({ message: "Error: email already in use" });
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Could not post due to validation errors",
+        err: errors,
+      });
     }
+    try {
+      const check = await User.findOne({ email: req.body.email }).exec();
 
-    const newuser = new User({
-      name: req.body.name,
-      bio: req.body.bio,
-      email: req.body.email,
-    });
+      if (check != null) {
+        return res.status(400).json({ message: "Error: email already in use" });
+      }
 
-    const newuserAuth = new UserAuth({
-      password: req.body.password,
-      email: req.body.email,
-    });
+      const newuser = new User({
+        name: req.body.name,
+        bio: req.body.bio,
+        email: req.body.email,
+      });
 
-    await Promise.all([newuser.save(), newuserAuth.save()]);
-    res.json({ message: "User created successfully" });
-  } catch (err) {
-    res.sendStatus(500);
-  }
-});
+      const newuserAuth = new UserAuth({
+        password: req.body.password,
+        email: req.body.email,
+      });
+
+      await Promise.all([newuser.save(), newuserAuth.save()]);
+      res.json({ message: "User created successfully" });
+    } catch (err) {
+      res.sendStatus(500);
+    }
+  }),
+];
 
 exports.user_patch = [
   passport.authenticate("jwt", { session: false }),
+  body("name")
+    .trim()
+    .notEmpty()
+    .withMessage("Please enter a name")
+    .isLength({ min: 6 })
+    .withMessage("Name must be a minimum of 6 characters")
+    .escape(),
+  body("bio").trim().escape(),
   asyncHandler(async (req, res) => {
     try {
       const user = await User.findById(req.params.userid);

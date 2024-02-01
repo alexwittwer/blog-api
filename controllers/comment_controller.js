@@ -29,7 +29,21 @@ exports.comment_get_single = asyncHandler(async (req, res) => {
 
 exports.comment_create = [
   passport.authenticate("jwt", { session: false }),
+  body("text")
+    .trim()
+    .isLength({ min: 150 })
+    .withMessage("Content must be a minimum of 20 characters")
+    .escape(),
   asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Could not post due to validation errors",
+        err: errors,
+      });
+    }
+
     try {
       const post = await Post.findById(req.params.postid).exec();
       const newComment = new Comment({
@@ -67,7 +81,6 @@ exports.comment_patch = [
       if (!comment) {
         res.status(404).json({ message: "Comment not found" });
       } else {
-        comment.user = req.body.user || comment.user;
         comment.text = req.body.text || comment.text;
 
         await comment.save();

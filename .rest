@@ -15,16 +15,16 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 {
-    "title": "Test",
+    "title": "I give up",
     "user": "65bad4f06af65e8d6a203c6d",
-    "text": "Hello World",
+    "text": "Hello WorldWorldWorl",
     "comments": []
 }
 
 ###
 
 
-PATCH http://localhost:3000/posts/65b9e5ede272d5b3438d66e3
+PATCH http://localhost:3000/posts/65badba45566f51fdc93f86e
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 

@@ -39,7 +39,27 @@ exports.post_get_single = asyncHandler(async (req, res) => {
 
 exports.post_create = [
   passport.authenticate("jwt", { session: false }),
+  body("title")
+    .trim()
+    .isLength({ min: 6 })
+    .withMessage("Titles must be 6 characters minimum")
+    .escape(),
+  body("text")
+    .trim()
+    .isLength({ min: 150 })
+    .withMessage("Content must be a minimum of 150 characters")
+    .escape(),
+
   asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Could not post due to validation errors",
+        err: errors,
+      });
+    }
+
     const newPost = new Post({
       title: req.body.title,
       user: req.body.user,
