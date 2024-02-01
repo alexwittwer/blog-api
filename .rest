@@ -5,7 +5,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65badba45566f51fdc93f86e
+GET http://localhost:3000/posts/65baf4dde79bed828f926b6c
 Content-Type: application/json
 
 ###
@@ -70,7 +70,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 {
-    "name": "Alex"
+    "name": "Alexander"
 }
 
 ###
@@ -86,7 +86,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65baf78b387f22de5cb7b10b
+GET http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65baf984180239fa5934c312
 Content-Type: application/json
 
 ###
@@ -102,17 +102,17 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhb
 
 ###
 
-PATCH http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65baf54ce75a9b1225d0ffc6
+PATCH http://localhost:3000/posts/65baf984180239fa5934c312/comments/65baf984180239fa5934c312
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 {
-    "text": "goodbye world"
+    "text": "di world"
 }
 
 ###
 
-DELETE http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65b858976206c24d2aba9914
+DELETE http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65baf984180239fa5934c312
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
