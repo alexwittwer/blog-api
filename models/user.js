@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema({
       ref: "Comment",
     },
   ],
+  email: { type: String, required: true },
   joinDate: { type: Date, default: Date.now },
   bio: { type: String },
 });
