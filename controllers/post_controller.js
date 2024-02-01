@@ -112,7 +112,7 @@ exports.post_patch = [
       post.text = req.body.text || post.text;
 
       await post.save();
-      res.status(200).json(post);
+      res.status(200).json({ message: "post updated" });
     } catch (err) {
       console.error(err);
       res.status(500).json(err);
