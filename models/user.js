@@ -18,7 +18,6 @@ const UserSchema = new mongoose.Schema({
   ],
   joinDate: { type: Date, default: Date.now },
   bio: { type: String },
-  email: { type: String, required: true, unique: true },
 });
 
 UserSchema.virtual("postCount").get(function () {
