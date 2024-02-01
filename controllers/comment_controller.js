@@ -1,5 +1,6 @@
 const Comment = require("../models/comment");
 const Post = require("../models/post");
+const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 const passport = require("passport");
@@ -9,12 +10,14 @@ exports.comment_get_all = asyncHandler(async (req, res) => {
     .populate("comments")
     .exec();
 
-  res.status(200).json(post.comments);
+  res.status(200).json({ postsComments: post.comments });
 });
 
 exports.comment_get_single = asyncHandler(async (req, res) => {
   try {
-    const comment = await Comment.findById(req.params.commentid).exec();
+    const comment = await Comment.findById(req.params.commentid)
+      .populate("user")
+      .exec();
 
     if (!comment) {
       res.status(404).json({ message: "Comment not found" });
@@ -31,8 +34,8 @@ exports.comment_create = [
   passport.authenticate("jwt", { session: false }),
   body("text")
     .trim()
-    .isLength({ min: 150 })
-    .withMessage("Content must be a minimum of 20 characters")
+    .isLength({ min: 10 })
+    .withMessage("Content must be a minimum of 10 characters")
     .escape(),
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -46,18 +49,22 @@ exports.comment_create = [
 
     try {
       const post = await Post.findById(req.params.postid).exec();
+      const user = await User.findById(post.user).exec();
+      console.log(req.user);
       const newComment = new Comment({
         user: req.body.user,
         text: req.body.text,
         parent: post._id,
       });
 
+      user.comments.push(newComment);
+
       if (!post) {
         res.status(403).json({ message: "Post not found" });
       } else {
         post.comments.push(newComment);
-        await Promise.all([post.save(), newComment.save()]);
-        res.status(200).json(post);
+        await Promise.all([post.save(), newComment.save(), user.save()]);
+        res.status(200).json(newComment);
       }
     } catch (err) {
       console.error(err);
@@ -70,11 +77,12 @@ exports.comment_patch = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
     try {
-      const comment = await Comment.findById(req.params.commentid).populate(
-        "user"
-      );
+      const comment = await Comment.findById(req.params.commentid)
+        .populate("user")
+        .exec();
+      const user = await User.findById(comment.user._id).exec();
 
-      if (comment.user.email !== req.user.email) {
+      if (user.email !== req.user.email) {
         return res.status(403);
       }
 

@@ -19,7 +19,14 @@ exports.user_get_all = asyncHandler(async (req, res) => {
 exports.user_get_single = asyncHandler(async (req, res) => {
   try {
     const user = await User.findById(req.params.userid)
-      .populate("posts", "comments")
+      .populate({
+        path: "comments",
+        select: "text parent",
+      })
+      .populate({
+        path: "posts",
+        select: "title",
+      })
       .exec();
 
     if (!user) {
@@ -34,13 +41,7 @@ exports.user_get_single = asyncHandler(async (req, res) => {
 });
 
 exports.user_create = [
-  body("name")
-    .trim()
-    .notEmpty()
-    .withMessage("Please enter a name")
-    .isLength({ min: 6 })
-    .withMessage("Name must be a minimum of 6 characters")
-    .escape(),
+  body("name").trim().notEmpty().withMessage("Please enter a name").escape(),
   body("bio").trim().escape(),
   body("email")
     .escape()
@@ -84,13 +85,7 @@ exports.user_create = [
 
 exports.user_patch = [
   passport.authenticate("jwt", { session: false }),
-  body("name")
-    .trim()
-    .notEmpty()
-    .withMessage("Please enter a name")
-    .isLength({ min: 6 })
-    .withMessage("Name must be a minimum of 6 characters")
-    .escape(),
+  body("name").trim().notEmpty().withMessage("Please enter a name").escape(),
   body("bio").trim().escape(),
   asyncHandler(async (req, res) => {
     try {

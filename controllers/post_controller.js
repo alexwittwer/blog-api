@@ -7,7 +7,16 @@ const passport = require("passport");
 
 exports.post_get_all = asyncHandler(async (req, res) => {
   try {
-    const allPosts = await Post.find().populate("comments").exec();
+    const allPosts = await Post.find()
+      .populate({
+        path: "comments",
+        select: "text",
+      })
+      .populate({
+        path: "user",
+        select: "name",
+      })
+      .exec();
 
     if (!allPosts) {
       res.status(404).json({ message: "No posts found" });
@@ -23,7 +32,14 @@ exports.post_get_all = asyncHandler(async (req, res) => {
 exports.post_get_single = asyncHandler(async (req, res) => {
   try {
     const singlePost = await Post.findById(req.params.postid)
-      .populate("comments user")
+      .populate({
+        path: "comments",
+        select: "text",
+      })
+      .populate({
+        path: "user",
+        select: "name posts",
+      })
       .exec();
 
     if (!singlePost) {
@@ -83,8 +99,6 @@ exports.post_patch = [
   asyncHandler(async (req, res) => {
     try {
       const post = await Post.findById(req.params.postid).populate("user");
-
-      console.log(req.user);
 
       if (post.user.email !== req.user.email) {
         return res.status(403);

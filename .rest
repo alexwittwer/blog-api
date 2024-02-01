@@ -12,21 +12,21 @@ Content-Type: application/json
 
 POST http://localhost:3000/posts
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 {
     "title": "I give up",
-    "user": "65bad4f06af65e8d6a203c6d",
-    "text": "Hello WorldWorldWorl",
+    "user": "65baf46de79bed828f926b60",
+    "text": "Hello worldworldworldworldworldworldworldworldworldworldworldworldworldworldwworldworldworldworldworldworldworldworldworldworldworldworldworldworldorldworldworldworldworldworldworldworldworldworldworldworld",
     "comments": []
 }
 
 ###
 
 
-PATCH http://localhost:3000/posts/65badba45566f51fdc93f86e
+PATCH http://localhost:3000/posts/65baf4dde79bed828f926b6c
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 {
     "title": "cake",
@@ -37,7 +37,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAY
 
 DELETE http://localhost:3000/posts/65bad94457f79fe0267b0c62
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 
 
@@ -48,7 +48,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/users/65bad4f06af65e8d6a203c6d
+GET http://localhost:3000/users/65baf46de79bed828f926b60
 Content-Type: application/json
 
 ###
@@ -60,14 +60,14 @@ Content-Type: application/json
     "name": "Alex",
     "bio": "Hello world!",
     "password": "password",
-    "email": "alex@blogger.com"
+    "email": "alexander@blogger.com"
 }
 
 ###
 
-PATCH http://localhost:3000/users/65bad4f06af65e8d6a203c6d
+PATCH http://localhost:3000/users/65baf46de79bed828f926b60
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 {
     "name": "Alex"
@@ -75,36 +75,36 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAY
 
 ###
 
-DELETE http://localhost:3000/users/65bad3843606ecab51febe02
+DELETE http://localhost:3000/users/65baf46de79bed828f926b60
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 ### COMMENT ROUTES
 
-GET http://localhost:3000/posts/65badba45566f51fdc93f86e/comments
+GET http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments
 Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65badba45566f51fdc93f86e/comments/65badbcd5566f51fdc93f884
+GET http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65baf78b387f22de5cb7b10b
 Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/posts/65badba45566f51fdc93f86e/comments/
+POST http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 {
-    "user": "65bad4f06af65e8d6a203c6d",
+    "user": "65baf46de79bed828f926b60",
     "text": "hello worlds"
 }
 
 ###
 
-PATCH http://localhost:3000/posts/65badba45566f51fdc93f86e/comments/65badbcd5566f51fdc93f884
+PATCH http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65baf54ce75a9b1225d0ffc6
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 {
     "text": "goodbye world"
@@ -112,9 +112,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAY
 
 ###
 
-DELETE http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/65b858976206c24d2aba9914
+DELETE http://localhost:3000/posts/65baf4dde79bed828f926b6c/comments/65b858976206c24d2aba9914
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhhbmRlckBibG9nZ2VyLmNvbSIsImlhdCI6MTcwNjc1MTE1OX0._Qc86KitQQE920_RaXUL9eNs-PN0rKCPvMUejJDxSwE
 
 
 ### LOGIN routes
@@ -124,5 +124,5 @@ Content-Type: application/json
 
 {
     "password": "password",
-    "email": "alex@blogger.com"
+    "email": "alexander@blogger.com"
 }
