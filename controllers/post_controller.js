@@ -15,7 +15,8 @@ exports.post_get_all = asyncHandler(async (req, res) => {
       res.json(allPosts);
     }
   } catch (err) {
-    res.status(500).json({ message: err });
+    console.error(err);
+    res.status(500);
   }
 });
 
@@ -31,6 +32,7 @@ exports.post_get_single = asyncHandler(async (req, res) => {
       res.json(singlePost);
     }
   } catch (err) {
+    console.error(err);
     res.sendStatus(500);
   }
 });
@@ -38,7 +40,6 @@ exports.post_get_single = asyncHandler(async (req, res) => {
 exports.post_create = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
-    // TODO add validation and sanitization
     const newPost = new Post({
       title: req.body.title,
       user: req.body.user,
@@ -51,6 +52,7 @@ exports.post_create = [
       await Promise.all([newPost.save(), user.save()]);
       res.status(201).json(newPost);
     } catch (err) {
+      console.error(err);
       res.sendStatus(500);
     }
   }),
@@ -60,7 +62,13 @@ exports.post_patch = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
     try {
-      const post = await Post.findById(req.params.postid);
+      const post = await Post.findById(req.params.postid).populate("user");
+
+      console.log(req.user);
+
+      if (post.user.email !== req.user.email) {
+        return res.status(403);
+      }
 
       if (!post) {
         res.status(404).json({ message: "Post not found" });
@@ -72,6 +80,7 @@ exports.post_patch = [
       await post.save();
       res.status(200).json(post);
     } catch (err) {
+      console.error(err);
       res.status(500).json(err);
     }
   }),
@@ -85,6 +94,10 @@ exports.post_delete = [
         Post.findById(req.params.postid).exec(),
         Comment.find({ parent: req.params.postid }).exec(),
       ]);
+
+      if (post.user.email !== req.user.email) {
+        return res.status(403);
+      }
 
       if (!post) {
         res.status(404).json({ message: "Post not found" });
@@ -105,6 +118,7 @@ exports.post_delete = [
         return res.json(post);
       }
     } catch (err) {
+      console.error(err);
       res.sendStatus(500);
     }
   }),

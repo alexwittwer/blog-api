@@ -65,6 +65,10 @@ exports.user_patch = [
     try {
       const user = await User.findById(req.params.userid);
 
+      if (user.email !== req.user.email) {
+        return res.status(403);
+      }
+
       if (!user) {
         res.status(404).json({ message: "User not found" });
       }
@@ -84,6 +88,10 @@ exports.user_delete = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.userid);
+
+    if (user.email !== req.user.email) {
+      return res.status(403);
+    }
 
     if (!user) {
       res.sendStatus(400);

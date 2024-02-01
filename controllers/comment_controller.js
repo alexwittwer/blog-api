@@ -22,7 +22,8 @@ exports.comment_get_single = asyncHandler(async (req, res) => {
       res.json(comment);
     }
   } catch (err) {
-    res.status(500).json({ message: err });
+    console.error(err);
+    res.status(500);
   }
 });
 
@@ -30,14 +31,12 @@ exports.comment_create = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
     try {
-      const post = await Post.findById(req.params.postid);
+      const post = await Post.findById(req.params.postid).exec();
       const newComment = new Comment({
         user: req.body.user,
         text: req.body.text,
         parent: post._id,
       });
-
-      console.log(newComment);
 
       if (!post) {
         res.status(403).json({ message: "Post not found" });
@@ -47,6 +46,7 @@ exports.comment_create = [
         res.status(200).json(post);
       }
     } catch (err) {
+      console.error(err);
       res.sendStatus(500);
     }
   }),
@@ -56,7 +56,13 @@ exports.comment_patch = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
     try {
-      const comment = await Comment.findById(req.params.commentid);
+      const comment = await Comment.findById(req.params.commentid).populate(
+        "user"
+      );
+
+      if (comment.user.email !== req.user.email) {
+        return res.status(403);
+      }
 
       if (!comment) {
         res.status(404).json({ message: "Comment not found" });
@@ -68,7 +74,8 @@ exports.comment_patch = [
         res.status(200).json(comment);
       }
     } catch (err) {
-      res.status(500).json(err);
+      console.error(err);
+      res.status(500);
     }
   }),
 ];
@@ -82,6 +89,10 @@ exports.comment_delete = [
         Post.findById(req.params.postid),
       ]);
 
+      if (comment.user.email !== req.user.email) {
+        return res.status(403);
+      }
+
       if (comment !== null) {
         post.comments = post.comments.filter(
           (postComment) => postComment._id !== comment._id
@@ -92,6 +103,7 @@ exports.comment_delete = [
         res.sendStatus(404);
       }
     } catch (err) {
+      console.error(err);
       res.sendStatus(500);
     }
   }),

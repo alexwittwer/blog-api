@@ -65,7 +65,7 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/users/65b9e42e973848191daf545a
+PATCH http://localhost:3000/users/65bad4f06af65e8d6a203c6d
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 

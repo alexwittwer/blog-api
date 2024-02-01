@@ -15,7 +15,7 @@ module.exports = new JwtStrategy(opts, async (jwt_payload, done) => {
       return done(null, false);
     }
 
-    return done(null, true);
+    return done(null, jwt_payload);
   } catch (err) {
     return done(err, false);
   }
