@@ -5,7 +5,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65b99f76acfb5733fbb28f8c
+GET http://localhost:3000/posts/65badba45566f51fdc93f86e
 Content-Type: application/json
 
 ###
@@ -26,6 +26,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAY
 
 PATCH http://localhost:3000/posts/65b9e5ede272d5b3438d66e3
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 {
     "title": "cake",
@@ -34,8 +35,9 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3000/posts/65bad5106af65e8d6a203c75
+DELETE http://localhost:3000/posts/65bad94457f79fe0267b0c62
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 
 
@@ -65,6 +67,7 @@ Content-Type: application/json
 
 PATCH http://localhost:3000/users/65b9e42e973848191daf545a
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 {
     "name": "Alex"
@@ -74,31 +77,34 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/users/65bad3843606ecab51febe02
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 ### COMMENT ROUTES
 
-GET http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments
+GET http://localhost:3000/posts/65badba45566f51fdc93f86e/comments
 Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/65b851351ea2529bda51ca91
+GET http://localhost:3000/posts/65badba45566f51fdc93f86e/comments/65badbcd5566f51fdc93f884
 Content-Type: application/json
 
 ###
 
-POST http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/
+POST http://localhost:3000/posts/65badba45566f51fdc93f86e/comments/
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 {
-    "user": "test",
+    "user": "65bad4f06af65e8d6a203c6d",
     "text": "hello worlds"
 }
 
 ###
 
-PATCH http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/65b851381ea2529bda51ca96
+PATCH http://localhost:3000/posts/65badba45566f51fdc93f86e/comments/65badbcd5566f51fdc93f884
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 {
     "text": "goodbye world"
@@ -108,6 +114,7 @@ Content-Type: application/json
 
 DELETE http://localhost:3000/posts/65bad54b3c79e1fc3884a0ae/comments/65b858976206c24d2aba9914
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFsZXhAYmxvZ2dlci5jb20iLCJpYXQiOjE3MDY3NDMwNDV9.NVgowWmNxnI9RAPI-rGlaEUc2oEzC6_brz4Nn__S5dU
 
 
 ### LOGIN routes

@@ -56,50 +56,56 @@ exports.post_create = [
   }),
 ];
 
-exports.post_patch = asyncHandler(async (req, res) => {
-  try {
-    const post = await Post.findById(req.params.postid);
+exports.post_patch = [
+  passport.authenticate("jwt", { session: false }),
+  asyncHandler(async (req, res) => {
+    try {
+      const post = await Post.findById(req.params.postid);
 
-    if (!post) {
-      res.status(404).json({ message: "Post not found" });
+      if (!post) {
+        res.status(404).json({ message: "Post not found" });
+      }
+
+      post.title = req.body.title || post.title;
+      post.text = req.body.text || post.text;
+
+      await post.save();
+      res.status(200).json(post);
+    } catch (err) {
+      res.status(500).json(err);
     }
+  }),
+];
 
-    post.title = req.body.title || post.title;
-    post.text = req.body.text || post.text;
-
-    await post.save();
-    res.status(200).json(post);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-exports.post_delete = asyncHandler(async (req, res) => {
-  try {
-    const [post, allComments] = await Promise.all([
-      Post.findById(req.params.postid).exec(),
-      Comment.find({ parent: req.params.postid }).exec(),
-    ]);
-
-    if (!post) {
-      res.status(404).json({ message: "Post not found" });
-    } else {
-      const user = await User.findById(post.user);
-
-      user.posts = user.posts.filter(
-        (userPost) => userPost._id.toString() !== post._id.toString()
-      );
-
-      await Promise.all([
-        allComments.map(async (comment) => {
-          await Comment.findByIdAndDelete(comment.id);
-        }),
-        user.save(),
-        Post.findByIdAndDelete(req.params.postid),
+exports.post_delete = [
+  passport.authenticate("jwt", { session: false }),
+  asyncHandler(async (req, res) => {
+    try {
+      const [post, allComments] = await Promise.all([
+        Post.findById(req.params.postid).exec(),
+        Comment.find({ parent: req.params.postid }).exec(),
       ]);
-      return res.json(post);
+
+      if (!post) {
+        res.status(404).json({ message: "Post not found" });
+      } else {
+        const user = await User.findById(post.user);
+
+        user.posts = user.posts.filter(
+          (userPost) => userPost._id.toString() !== post._id.toString()
+        );
+
+        await Promise.all([
+          allComments.map(async (comment) => {
+            await Comment.findByIdAndDelete(comment.id);
+          }),
+          user.save(),
+          Post.findByIdAndDelete(req.params.postid),
+        ]);
+        return res.json(post);
+      }
+    } catch (err) {
+      res.sendStatus(500);
     }
-  } catch (err) {
-    res.sendStatus(500);
-  }
-});
+  }),
+];
