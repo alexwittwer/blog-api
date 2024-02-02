@@ -11,7 +11,7 @@ exports.user_get_all = asyncHandler(async (req, res) => {
     const allUsers = await User.find().exec();
 
     if (allUsers != null) {
-      return res.json(allUsers);
+      return res.status(200).json(allUsers);
     }
 
     return res.sendStatus(404);
@@ -83,7 +83,7 @@ exports.user_create = [
       });
 
       await Promise.all([newuser.save(), newuserAuth.save()]);
-      return res.json({ message: "User created successfully" });
+      return res.status(200).json({ message: "User created successfully" });
     } catch (err) {
       return res.sendStatus(500);
     }
@@ -98,13 +98,12 @@ exports.user_patch = [
     try {
       const user = await User.findById(req.params.userid);
 
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
       // protects comments from other user deleting or updating them
       if (user.email !== req.user.email) {
         return res.sendStatus(403);
-      }
-
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
       }
 
       user.name = req.body.name || user.name;

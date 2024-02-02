@@ -91,11 +91,15 @@ exports.comment_patch = [
       const comment = await Comment.findById(req.params.commentid)
         .populate("user")
         .exec();
-      const user = await User.findById(comment.user._id).exec();
 
       // not found
       if (!comment) {
         return res.status(404).json({ message: "Comment not found" });
+      }
+
+      const user = await User.findById(comment.user._id).exec();
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
       }
 
       // request user does not match
@@ -122,12 +126,12 @@ exports.comment_delete = [
         Post.findById(req.params.postid).exec(),
       ]);
 
-      const user = await User.findById(comment.user.id);
-
       // not found
-      if (comment === null || post === null) {
+      if (!comment || !post) {
         return res.sendStatus(404);
       }
+
+      const user = await User.findById(comment.user.id);
 
       // protects comments from other user deleting or updating them
       if (comment.user.email !== req.user.email) {
@@ -147,6 +151,7 @@ exports.comment_delete = [
         post.save(),
         Comment.findByIdAndDelete(req.params.commentid),
       ]);
+
       return res.status(200).json(comment);
     } catch (err) {
       console.error(err);

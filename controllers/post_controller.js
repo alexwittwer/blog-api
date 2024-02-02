@@ -22,7 +22,7 @@ exports.post_get_all = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "No posts found" });
     }
 
-    return res.json(allPosts);
+    return res.status(200).json(allPosts);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -46,7 +46,7 @@ exports.post_get_single = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    return res.json(singlePost);
+    return res.status(200).json(singlePost);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -87,7 +87,7 @@ exports.post_create = [
 
       user.posts.push(newPost);
       await Promise.all([newPost.save(), user.save()]);
-      return res.status(201).json({ message: "Post created", newPost });
+      return res.status(201).json({ message: "Post created" });
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
@@ -133,7 +133,7 @@ exports.post_patch = [
       post.text = req.body.text || post.text;
 
       await post.save();
-      return res.status(200).json({ message: "post updated" });
+      return res.status(200).json({ message: "Post updated" });
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
@@ -152,17 +152,18 @@ exports.post_delete = [
 
       const user = await User.findById(post.user);
 
-      // protects comments from other user deleting or updating them
-      if (post.user.email !== req.user.email) {
-        console.error("User email does not match");
-        return res.sendStatus(403);
-      }
       if (!post) {
         return res.status(404).json({ message: "Post not found" });
       }
 
       if (!user) {
         return res.status(404).json({ message: "User not found" });
+      }
+
+      // protects comments from other user deleting or updating them
+      if (post.user.email !== req.user.email) {
+        console.error("User email does not match");
+        return res.sendStatus(403);
       }
 
       user.posts = user.posts.filter(
