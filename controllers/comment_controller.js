@@ -59,19 +59,21 @@ exports.comment_create = [
     try {
       const post = await Post.findById(req.params.postid).exec();
       const user = await User.findById(post.user).exec();
-      console.log(req.user);
       const newComment = new Comment({
         user: req.user.user.userid,
         text: req.body.text,
         parent: post._id,
       });
 
-      user.comments.push(newComment);
-
       if (!post) {
         return res.status(403).json({ message: "Post not found" });
       }
 
+      if (!user) {
+        return res.status(404).json({ message: "User not found}" });
+      }
+
+      user.comments.push(newComment);
       post.comments.push(newComment);
       await Promise.all([post.save(), newComment.save(), user.save()]);
       return res.status(200).json(newComment);
@@ -120,6 +122,8 @@ exports.comment_delete = [
         Post.findById(req.params.postid).exec(),
       ]);
 
+      const user = await User.findById(comment.user.id);
+
       // not found
       if (comment === null || post === null) {
         return res.sendStatus(404);
@@ -133,8 +137,16 @@ exports.comment_delete = [
       post.comments = post.comments.filter(
         (postComment) => postComment._id !== comment._id
       );
-      await post.save();
-      await Comment.findByIdAndDelete(req.params.commentid);
+
+      user.comments = user.comments.filter(
+        (postComment) => postComment._id !== comment._id
+      );
+
+      await Promise.all([
+        user.save(),
+        post.save(),
+        Comment.findByIdAndDelete(req.params.commentid),
+      ]);
       return res.status(200).json(comment);
     } catch (err) {
       console.error(err);
