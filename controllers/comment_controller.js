@@ -32,7 +32,7 @@ exports.comment_get_single = asyncHandler(async (req, res) => {
       return res.status(404).json({ message: "Comment not found" });
     }
 
-    return res.json(comment);
+    return res.status(200).json(comment);
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -98,7 +98,7 @@ exports.comment_patch = [
 
       // request user does not match
       if (user.email !== req.user.email) {
-        return res.status(403).send();
+        return res.sendStatus(403);
       }
 
       comment.text = req.body.text || comment.text;
@@ -122,12 +122,12 @@ exports.comment_delete = [
 
       // not found
       if (comment === null || post === null) {
-        return res.status(404);
+        return res.sendStatus(404);
       }
 
       // protects comments from other user deleting or updating them
       if (comment.user.email !== req.user.email) {
-        return res.status(403);
+        return res.sendStatus(403);
       }
 
       post.comments = post.comments.filter(
@@ -135,10 +135,10 @@ exports.comment_delete = [
       );
       await post.save();
       await Comment.findByIdAndDelete(req.params.commentid);
-      return res.json(comment);
+      return res.status(200).json(comment);
     } catch (err) {
       console.error(err);
-      return res.status(500);
+      return res.sendStatus(500);
     }
   }),
 ];

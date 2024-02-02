@@ -87,7 +87,7 @@ exports.post_create = [
 
       user.posts.push(newPost);
       await Promise.all([newPost.save(), user.save()]);
-      return res.status(201).json(newPost);
+      return res.status(201).json({ message: "Post created", newPost });
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
