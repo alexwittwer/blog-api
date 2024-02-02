@@ -7,12 +7,17 @@ const asyncHandler = require("express-async-handler");
 const { body, validationResult } = require("express-validator");
 
 exports.user_get_all = asyncHandler(async (req, res) => {
-  const allUsers = await User.find().exec();
+  try {
+    const allUsers = await User.find().exec();
 
-  if (allUsers != null) {
-    res.json(allUsers);
-  } else {
-    res.sendStatus(404);
+    if (allUsers != null) {
+      return res.json(allUsers);
+    }
+
+    return res.sendStatus(404);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
   }
 });
 
@@ -30,13 +35,13 @@ exports.user_get_single = asyncHandler(async (req, res) => {
       .exec();
 
     if (!user) {
-      res.sendStatus(404);
-    } else {
-      res.status(200).json(user);
+      return res.sendStatus(404);
     }
+
+    return res.status(200).json(user);
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });
 
@@ -57,6 +62,7 @@ exports.user_create = [
         err: errors,
       });
     }
+
     try {
       const check = await User.findOne({ email: req.body.email }).exec();
 
@@ -73,12 +79,13 @@ exports.user_create = [
       const newuserAuth = new UserAuth({
         password: req.body.password,
         email: req.body.email,
+        userid: newuser.id,
       });
 
       await Promise.all([newuser.save(), newuserAuth.save()]);
-      res.json({ message: "User created successfully" });
+      return res.json({ message: "User created successfully" });
     } catch (err) {
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   }),
 ];
@@ -91,21 +98,22 @@ exports.user_patch = [
     try {
       const user = await User.findById(req.params.userid);
 
+      // protects comments from other user deleting or updating them
       if (user.email !== req.user.email) {
-        return res.status(403);
+        return res.sendStatus(403);
       }
 
       if (!user) {
-        res.status(404).json({ message: "User not found" });
+        return res.status(404).json({ message: "User not found" });
       }
 
       user.name = req.body.name || user.name;
       user.bio = req.body.bio || user.bio;
 
       await user.save();
-      res.status(200).json(user);
+      return res.status(200).json(user);
     } catch (err) {
-      res.status(500).json(err);
+      return res.status(500).json(err);
     }
   }),
 ];
@@ -113,26 +121,31 @@ exports.user_patch = [
 exports.user_delete = [
   passport.authenticate("jwt", { session: false }),
   asyncHandler(async (req, res) => {
-    const user = await User.findById(req.params.userid);
+    try {
+      const user = await User.findById(req.params.userid);
 
-    if (user.email !== req.user.email) {
-      return res.status(403);
-    }
-
-    if (!user) {
-      res.sendStatus(400);
-    } else if (user.posts.length) {
-      res.status(403).json({ message: "Delete posts before continuing" });
-    } else {
-      try {
-        await Promise.all([
-          User.findByIdAndDelete(req.params.userid),
-          UserAuth.deleteOne({ email: user.email }),
-        ]);
-        res.status(200).json({ message: "User deleted" });
-      } catch (err) {
-        res.sendStatus(500);
+      if (!user) {
+        return res.sendStatus(400);
       }
+
+      // protects comments from other user deleting or updating them
+      if (user.email !== req.user.email) {
+        return res.sendStatus(403);
+      }
+
+      if (user.posts.length) {
+        return res
+          .status(403)
+          .json({ message: "Delete posts before continuing" });
+      }
+
+      await Promise.all([
+        User.findByIdAndDelete(req.params.userid),
+        UserAuth.deleteOne({ email: user.email }),
+      ]);
+      return res.status(200).json({ message: "User deleted" });
+    } catch (err) {
+      return res.sendStatus(500);
     }
   }),
 ];

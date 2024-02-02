@@ -25,11 +25,12 @@ exports.login = asyncHandler(async (req, res) => {
 
     const opts = {};
     const key = process.env.JWT_KEY;
-    const token = jwt.sign({ email }, key, opts);
+    const token = jwt.sign({ email, user }, key, opts);
 
     return res.status(200).json({
       message: "Authorization passed",
       token,
+      user,
     });
   } catch (err) {
     res.sendStatus(500);

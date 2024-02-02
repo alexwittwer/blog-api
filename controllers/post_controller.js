@@ -19,13 +19,13 @@ exports.post_get_all = asyncHandler(async (req, res) => {
       .exec();
 
     if (!allPosts) {
-      res.status(404).json({ message: "No posts found" });
-    } else {
-      res.json(allPosts);
+      return res.status(404).json({ message: "No posts found" });
     }
+
+    return res.json(allPosts);
   } catch (err) {
     console.error(err);
-    res.status(500);
+    return res.sendStatus(500);
   }
 });
 
@@ -43,13 +43,13 @@ exports.post_get_single = asyncHandler(async (req, res) => {
       .exec();
 
     if (!singlePost) {
-      res.status(404).json({ message: "Post not found" });
-    } else {
-      res.json(singlePost);
+      return res.status(404).json({ message: "Post not found" });
     }
+
+    return res.json(singlePost);
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });
 
@@ -76,46 +76,67 @@ exports.post_create = [
       });
     }
 
-    const newPost = new Post({
-      title: req.body.title,
-      user: req.body.user,
-      text: req.body.text,
-    });
-    const user = await User.findById(req.body.user);
-
     try {
+      const newPost = new Post({
+        title: req.body.title,
+        user: req.user.user.userid,
+        text: req.body.text,
+      });
+
+      const user = await User.findById(req.user.user.userid);
+
       user.posts.push(newPost);
       await Promise.all([newPost.save(), user.save()]);
-      res.status(201).json(newPost);
+      return res.status(201).json(newPost);
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   }),
 ];
 
 exports.post_patch = [
   passport.authenticate("jwt", { session: false }),
+  body("title")
+    .trim()
+    .isLength({ min: 6 })
+    .withMessage("Titles must be 6 characters minimum")
+    .escape(),
+  body("text")
+    .trim()
+    .isLength({ min: 150 })
+    .withMessage("Content must be a minimum of 150 characters")
+    .escape(),
   asyncHandler(async (req, res) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        message: "Could not post due to validation errors",
+        err: errors,
+      });
+    }
+
     try {
       const post = await Post.findById(req.params.postid).populate("user");
 
-      if (post.user.email !== req.user.email) {
-        return res.status(403);
+      if (!post) {
+        return res.status(404).json({ message: "Post not found" });
       }
 
-      if (!post) {
-        res.status(404).json({ message: "Post not found" });
+      // protects comments from other user deleting or updating them
+      if (post.user.email !== req.user.email) {
+        return res.sendStatus(403);
       }
 
       post.title = req.body.title || post.title;
       post.text = req.body.text || post.text;
 
       await post.save();
-      res.status(200).json({ message: "post updated" });
+      return res.status(200).json({ message: "post updated" });
     } catch (err) {
       console.error(err);
-      res.status(500).json(err);
+      return res.sendStatus(500);
     }
   }),
 ];
@@ -125,35 +146,40 @@ exports.post_delete = [
   asyncHandler(async (req, res) => {
     try {
       const [post, allComments] = await Promise.all([
-        Post.findById(req.params.postid).exec(),
+        Post.findById(req.params.postid).populate("user").exec(),
         Comment.find({ parent: req.params.postid }).exec(),
       ]);
 
+      const user = await User.findById(post.user);
+
+      // protects comments from other user deleting or updating them
       if (post.user.email !== req.user.email) {
-        return res.status(403);
+        console.error("User email does not match");
+        return res.sendStatus(403);
       }
-
       if (!post) {
-        res.status(404).json({ message: "Post not found" });
-      } else {
-        const user = await User.findById(post.user);
-
-        user.posts = user.posts.filter(
-          (userPost) => userPost._id.toString() !== post._id.toString()
-        );
-
-        await Promise.all([
-          allComments.map(async (comment) => {
-            await Comment.findByIdAndDelete(comment.id);
-          }),
-          user.save(),
-          Post.findByIdAndDelete(req.params.postid),
-        ]);
-        return res.json(post);
+        return res.status(404).json({ message: "Post not found" });
       }
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      user.posts = user.posts.filter(
+        (userPost) => userPost._id.toString() !== post._id.toString()
+      );
+
+      await Promise.all([
+        allComments.map(async (comment) => {
+          await Comment.findByIdAndDelete(comment.id);
+        }),
+        user.save(),
+        Post.findByIdAndDelete(req.params.postid),
+      ]);
+      return res.status(200).json({ message: "Post deleted successfully" });
     } catch (err) {
       console.error(err);
-      res.sendStatus(500);
+      return res.sendStatus(500);
     }
   }),
 ];
