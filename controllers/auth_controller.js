@@ -15,13 +15,8 @@ exports.login = asyncHandler(async (req, res) => {
     const user = await UserAuth.findOne({ email });
     const match = await bcrypt.compare(password, user.password);
 
-    if (!user) {
-      res.status(404).send();
-    }
-
-    if (!match) {
-      res.status(401).send();
-    }
+    if (!user) return res.status(404).send();
+    if (!match) return res.status(401).send();
 
     const opts = {};
     const key = process.env.JWT_KEY;
@@ -33,6 +28,6 @@ exports.login = asyncHandler(async (req, res) => {
       user,
     });
   } catch (err) {
-    res.sendStatus(500);
+    return res.sendStatus(500);
   }
 });

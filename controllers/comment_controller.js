@@ -132,6 +132,7 @@ exports.comment_delete = [
       }
 
       const user = await User.findById(comment.user.id);
+      if (!user) return res.sendStatus(404);
 
       // protects comments from other user deleting or updating them
       if (comment.user.email !== req.user.email) {

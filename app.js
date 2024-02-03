@@ -6,6 +6,7 @@ const logger = require("morgan");
 const userRouter = require("./routes/user_routes");
 const commentRouter = require("./routes/comment_routes");
 const authRouter = require("./routes/auth_routes");
+const cors = require("cors");
 
 const mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB);
@@ -18,6 +19,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logger("dev"));
+app.use(cors());
 
 app.use("/posts", postRouter);
 app.use("/users", userRouter);
