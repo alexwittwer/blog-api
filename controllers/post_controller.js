@@ -65,6 +65,11 @@ exports.post_create = [
     .isLength({ min: 150 })
     .withMessage("Content must be a minimum of 150 characters")
     .escape(),
+  body("lede")
+    .trim()
+    .isLength({ max: 50 })
+    .withMessage("Lede must be under 50 ch")
+    .escape(),
 
   asyncHandler(async (req, res) => {
     const errors = validationResult(req);
@@ -81,6 +86,7 @@ exports.post_create = [
         title: req.body.title,
         user: req.user.user.userid,
         text: req.body.text,
+        lede: req.body.lede,
       });
 
       const user = await User.findById(req.user.user.userid);
