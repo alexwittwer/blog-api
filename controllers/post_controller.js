@@ -63,8 +63,7 @@ exports.post_create = [
   body("text")
     .trim()
     .isLength({ min: 150 })
-    .withMessage("Content must be a minimum of 150 characters")
-    .escape(),
+    .withMessage("Content must be a minimum of 150 characters"),
   body("lede")
     .trim()
     .isLength({ max: 50 })
@@ -93,7 +92,7 @@ exports.post_create = [
 
       user.posts.push(newPost);
       await Promise.all([newPost.save(), user.save()]);
-      return res.status(201).json({ message: "Post created" });
+      return res.status(201).json({ message: "Post created", id: newPost.id });
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
