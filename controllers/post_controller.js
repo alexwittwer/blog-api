@@ -34,7 +34,7 @@ exports.post_get_single = asyncHandler(async (req, res) => {
     const singlePost = await Post.findById(req.params.postid)
       .populate({
         path: "comments",
-        select: "text",
+        select: "text user",
       })
       .populate({
         path: "user",
