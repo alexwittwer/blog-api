@@ -62,12 +62,12 @@ exports.post_create = [
     .escape(),
   body("text")
     .trim()
-    .isLength({ min: 150 })
-    .withMessage("Content must be a minimum of 150 characters"),
+    .isLength({ min: 300 })
+    .withMessage("Content must be a minimum of 300 characters"),
   body("lede")
     .trim()
-    .isLength({ max: 50 })
-    .withMessage("Lede must be under 50 ch")
+    .isLength({ max: 100 })
+    .withMessage("Lede must be under 100 characters")
     .escape(),
 
   asyncHandler(async (req, res) => {
