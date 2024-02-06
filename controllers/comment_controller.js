@@ -123,7 +123,12 @@ exports.comment_delete = [
     try {
       const [comment, post] = await Promise.all([
         Comment.findById(req.params.commentid).populate("user").exec(),
-        Post.findById(req.params.postid).exec(),
+        Post.findById(req.params.postid)
+          .populate({
+            path: "comments",
+            select: "text",
+          })
+          .exec(),
       ]);
 
       // not found
@@ -131,7 +136,13 @@ exports.comment_delete = [
         return res.sendStatus(404);
       }
 
-      const user = await User.findById(comment.user.id);
+      const user = await User.findById(comment.user.id)
+        .populate({
+          path: "comments",
+          select: "text",
+        })
+        .exec();
+
       if (!user) return res.sendStatus(404);
 
       // protects comments from other user deleting or updating them
@@ -140,11 +151,11 @@ exports.comment_delete = [
       }
 
       post.comments = post.comments.filter(
-        (postComment) => postComment._id !== comment._id
+        (comment) => comment.id !== req.params.postid
       );
 
       user.comments = user.comments.filter(
-        (postComment) => postComment._id !== req.params.commentid
+        (comment) => comment.id !== req.params.commentid
       );
 
       await Promise.all([
@@ -153,7 +164,7 @@ exports.comment_delete = [
         Comment.findByIdAndDelete(req.params.commentid),
       ]);
 
-      return res.status(200).json(comment);
+      return res.status(200).json({ comment, post });
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
