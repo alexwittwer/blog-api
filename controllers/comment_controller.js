@@ -73,7 +73,7 @@ exports.comment_create = [
       user.comments.push(newComment);
       post.comments.push(newComment);
       await Promise.all([post.save(), newComment.save(), user.save()]);
-      return res.status(200).json(newComment);
+      return res.status(200).json({ message: "Comment created" });
     } catch (err) {
       console.error(err);
       return res.sendStatus(500);
