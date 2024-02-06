@@ -50,10 +50,7 @@ exports.comment_create = [
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      return res.status(400).json({
-        message: "Could not post due to validation errors",
-        err: errors,
-      });
+      return res.status(400).json(errors);
     }
 
     try {
