@@ -62,7 +62,7 @@ exports.comment_create = [
       const newComment = new Comment({
         user: req.user.user.userid,
         text: req.body.text,
-        parent: post._id,
+        parent: post.id,
       });
 
       if (!post) {
@@ -97,7 +97,7 @@ exports.comment_patch = [
         return res.status(404).json({ message: "Comment not found" });
       }
 
-      const user = await User.findById(comment.user._id).exec();
+      const user = await User.findById(comment.user.id).exec();
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
