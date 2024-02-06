@@ -81,7 +81,7 @@ exports.post_create = [
     if (!errors.isEmpty()) {
       return res.status(400).json({
         message: "Could not post due to validation errors",
-        err: errors,
+        errors,
       });
     }
 
@@ -123,7 +123,7 @@ exports.post_patch = [
     if (!errors.isEmpty()) {
       return res.status(400).json({
         message: "Could not post due to validation errors",
-        err: errors,
+        errors,
       });
     }
 
@@ -178,7 +178,7 @@ exports.post_delete = [
       }
 
       user.posts = user.posts.filter(
-        (userPost) => userPost._id.toString() !== post._id.toString()
+        (userPost) => userPost.id.toString() !== post.id.toString()
       );
 
       await Promise.all([
