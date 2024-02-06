@@ -144,7 +144,7 @@ exports.comment_delete = [
       );
 
       user.comments = user.comments.filter(
-        (postComment) => postComment._id !== comment._id
+        (postComment) => postComment._id !== req.params.commentid
       );
 
       await Promise.all([
