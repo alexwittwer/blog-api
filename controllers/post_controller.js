@@ -16,6 +16,7 @@ exports.post_get_all = asyncHandler(async (req, res) => {
         path: "user",
         select: "name",
       })
+      .sort("-date")
       .exec();
 
     if (!allPosts) {
