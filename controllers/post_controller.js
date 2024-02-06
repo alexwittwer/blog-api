@@ -141,6 +141,7 @@ exports.post_patch = [
 
       post.title = req.body.title || post.title;
       post.text = req.body.text || post.text;
+      post.lede = req.body.lede || post.lede;
 
       await post.save();
       return res.status(200).json({ message: "Post updated" });
