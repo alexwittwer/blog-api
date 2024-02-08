@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true },
   joinDate: { type: Date, default: Date.now },
   bio: { type: String },
+  isAdmin: { type: Boolean, default: false },
 });
 
 UserSchema.virtual("postCount").get(function () {

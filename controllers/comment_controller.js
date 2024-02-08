@@ -143,7 +143,7 @@ exports.comment_delete = [
       if (!user) return res.sendStatus(404);
 
       // protects comments from other user deleting or updating them
-      if (comment.user.email !== req.user.email) {
+      if (comment.user.email !== req.user.email && !req.user.isAdmin) {
         return res.sendStatus(403);
       }
 
