@@ -166,7 +166,7 @@ exports.post_delete = [
       }
 
       // protects comments from other user deleting or updating them
-      if (!req.user.isAdmin || post.user.email !== req.user.email) {
+      if (!req.isAdmin || post.user.email !== req.user.email) {
         console.error("User email does not match");
         return res.sendStatus(403);
       }
