@@ -1,5 +1,3 @@
-# blog-api
-
 # Blog API
 
 This is an Express.js blog API that allows users to create accounts, create posts, comment on posts, edit their own posts, and delete their own posts.
